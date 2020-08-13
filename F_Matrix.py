@@ -13,7 +13,7 @@ def create_f_matrix(state_vector):
             if i == j:
                 q.append('1')
             elif j - i == len(state_vector) / 2:
-                q.append("%.0f" % (state_vector[0] / state_vector[1]))
+                q.append("%.0f" % (state_vector[i] / state_vector[j]))
             else:
                 q.append('0')
         f_matrix.append(q)
