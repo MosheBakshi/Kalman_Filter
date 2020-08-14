@@ -1,10 +1,6 @@
 ##
 # Main function of the Python program.
-#
-##
-
 from finder import compute_gaussian, predict, update
-# import numpy as np
 import math
 
 
