@@ -19,8 +19,8 @@ def main():
     varSensor = stdSensor ** 2
     pMatrix = [[varPos, 0],
                [0, varVel]]
-    hMatrix = [[0.3048,
-                0]]
+    hMatrix = [[0.3048, 0]]
+    sensor_pos = [[43]]
     rMatrix = [[varSensor]]
     state_vector = [[8],
                     [5]]  # [X, Y, X', Y'
@@ -28,9 +28,14 @@ def main():
     for line in state_vector:
         print(line)
     #   print(np.matrix(state_vector).size, 'x', np.matrix(state_vector[0]).size)
+    print('\nOld P Matrix:')  # print Old P Matrix
+    for line in pMatrix:
+        print(line)
+    time.sleep(sleep_time)
     f_matrix = create_f_matrix(state_vector)
     ft_matrix = transpose_matrix(f_matrix)
-    state_vector = matmul(f_matrix, state_vector)
+    state_vector = matmul(f_matrix, state_vector)   # New state vector prediction
+    pMatrix = matmul(matmul(f_matrix, pMatrix), ft_matrix)  # new predicted p matrix
     print('\nF Matrix:')  # print F Matrix
     for line in f_matrix:
         print(line)
@@ -39,11 +44,6 @@ def main():
     for line in ft_matrix:
         print(line)
     time.sleep(sleep_time)
-    print('\nOld P Matrix:')  # print Old P Matrix
-    for line in pMatrix:
-        print(line)
-    time.sleep(sleep_time)
-    pMatrix = matmul(matmul(f_matrix, pMatrix), ft_matrix)  # new predicted p matrix
     np.set_printoptions(formatter={'float_kind': "{:.2f}".format})  # format of printing floating point in matrix
     print('\nNew P Matrix:')  # print New P Matrix
     for line in pMatrix:
@@ -62,12 +62,12 @@ def main():
     for line in KG:
         print(line)
     time.sleep(sleep_time)
-    sensor_state_vector = [[43],
-                           [5]]
-    # state_vector = state_vector + matmul(KG, (sensor_state_vector - matmul(hMatrix, state_vector)))
-    # print('\nNew Updated State Vector:')
-    # for line in state_vector:
-    #     print(line)
+    print('\n', matmul(sensor_pos, hMatrix))
+    # need to check correctness returning matrix of 2x2 instead of 2x1
+    state_vector = state_vector + matmul(KG[1], (matmul(sensor_pos, hMatrix) - transpose_matrix(state_vector)))
+    print('\nNew Updated State Vector:')
+    for line in state_vector:
+        print(line)
 
 
 if __name__ == '__main__':
