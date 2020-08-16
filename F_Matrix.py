@@ -1,6 +1,4 @@
 import time
-
-from comtypes.safearray import numpy as np
 from numpy.core._multiarray_umath import matmul
 
 
